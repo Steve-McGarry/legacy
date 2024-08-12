@@ -1,0 +1,15 @@
+edge_name,name,speed,rx_errors,operator_name,ip_address,link_detected,collisions,mac_address,netmask,tx_errors,ipv6_address,autonegotiation,signal_quality
+A_Northampton-710,GE3,"1000 Mbps, full duplex",0,N/A,192.168.0.88,true,0,88:DC:97:24:BC:71,255.255.255.0,0,,on,N/A
+A_Northampton-710,GE4,N/A,0,N/A,N/A,false,0,88:DC:97:24:BC:70,N/A,0,N/A,N/A,N/A
+A_Northampton-710,SFP1,N/A,0,N/A,N/A,false,0,88:DC:97:24:BC:72,N/A,0,N/A,N/A,N/A
+A_Northampton-710,GE1,N/A,0,N/A,N/A,false,0,88:DC:97:24:BC:73,N/A,0,N/A,N/A,N/A
+A_Northampton-710,GE2,N/A,0,N/A,N/A,false,0,88:DC:97:24:BC:74,N/A,0,N/A,N/A,N/A
+South Woodford,GE3,N/A,0,N/A,N/A,false,0,18:5A:58:1E:4B:72,N/A,0,N/A,N/A,N/A
+South Woodford,GE4,N/A,0,N/A,N/A,false,0,18:5A:58:1E:4B:73,N/A,0,N/A,N/A,N/A
+South Woodford,GE5,"1000 Mbps, full duplex",0,N/A,192.168.0.45,true,0,18:5A:58:1E:4B:74,255.255.255.0,0,,on,N/A
+South Woodford,GE6,N/A,0,N/A,N/A,false,0,18:5A:58:1E:4B:75,N/A,0,N/A,N/A,N/A
+South Woodford,SFP1,N/A,0,N/A,N/A,false,0,18:5A:58:1E:4B:63,N/A,0,N/A,N/A,N/A
+South Woodford,SFP2,N/A,0,N/A,N/A,false,0,18:5A:58:1E:4B:62,N/A,0,N/A,N/A,N/A
+South Woodford,USB1,N/A,0,N/A,192.168.8.158,true,0,N/A,255.255.255.0,0,,N/A,N/A
+South Woodford,GE1,N/A,0,N/A,N/A,false,0,18:5A:58:1E:4B:70,N/A,0,N/A,N/A,N/A
+South Woodford,GE2,"1000 Mbps, full duplex",0,N/A,N/A,true,0,18:5A:58:1E:4B:71,N/A,0,N/A,N/A,N/A
