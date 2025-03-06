@@ -1,0 +1,29 @@
+import sys
+import datetime
+import requests
+import json
+
+sys.path.append ('/Users/stevemcgarry/Projects/VS_Python/Tools')
+from gyro_tools import *
+
+# >>>vars
+vco_hostname = 'vco211-fra1.velocloud.net'
+enterprise_id = 43
+edge_id = 27901
+token = f'Token {api_template("velo_211")}'
+vco_url = f'https://{vco_hostname}/portal/rest/'
+headers = {"Content-Type": "application/json", "Authorization": token}
+
+# >>>api_calls
+get_edge = f'{vco_url}/edge/getEdge'
+
+# get license info
+edge_params = {
+    'enterpriseId': enterprise_id,
+    'edgeId': edge_id
+}
+
+call_response = requests.post(get_edge, headers=headers, data=json.dumps(edge_params))
+e_resp = call_response.json()
+
+jprint(e_resp)

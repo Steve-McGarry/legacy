@@ -1,0 +1,11 @@
+* * * * *   RESULTS : ubuntu-focal-2 to London    * * * * *
+
+Average transfer time for [4.149, 4.214, 4.144] is: 4.17
+
+Ping statistics for 5 packets: min/avg/max/mdev = 137.867/138.486/138.682/0.310 ms
+
+* * * * *   RESULTS : ubuntu-focal-2 to Hong Kong    * * * * *
+
+Average transfer time for [4.147, 4.21, 4.214] is: 4.19
+
+Ping statistics for 5 packets: min/avg/max/mdev = 140.205/140.942/143.753/1.405 ms

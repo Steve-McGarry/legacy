@@ -1,0 +1,14 @@
+# %%
+l1 = {'[SF] SFDZB5_Ulverston': 8891, '[SF] SFDZB6_Cardigan': 9135, '[SF] SFDZB7_Walsall': 9270, '[SF] SFDZB8_Cranleigh': 8207}
+
+# %%
+l1
+
+# %%
+a = '1'
+
+# %%
+if a != '':
+    print('something')
+else:print('none')
+# %%
