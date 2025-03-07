@@ -1,0 +1,61 @@
+# %%
+def my_function(argument,thing):
+    # Create a variable from the argument
+    my_variable = argument
+    my_thing = thing
+    print("The value of my_variable is:", my_variable)
+    print('thing is:', my_thing)
+
+# Call the function with an argument
+my_function(10,20)
+# %%
+import datetime
+# %%
+now = datetime.datetime.now()
+suffix = now.strftime('%d%m%y-%H:%M:%S')
+now
+suffix
+# %%
+now
+# %%
+base_output = '/Users/stevemcgarry/Projects/Velo-Websockets/Office/output'
+now = datetime.datetime.now()
+suffix = now.strftime('%d%m%y')
+edges_output = f'{base_output}/vce_list-{suffix}.json'
+# %%
+edges_output
+# %%
+l1 = [1,2,3]
+# %%
+len(l1)
+# %%
+for i in range(len(l1)):
+    print(i)
+# %%
+for i in range(3):
+    print(i)
+# %%
+wan = 3
+# %%
+for i in range(wan):
+    print(i)
+# %%
+import datetime
+
+# Example epoch timestamp
+epoch_timestamp = 1717422319489/1000  # This represents October 1, 2021
+
+# Convert epoch to datetime
+date_time = datetime.datetime.fromtimestamp(epoch_timestamp)
+formatted_date = date_time.strftime('%Y-%m-%d')
+
+# Print the result
+print("Epoch:", epoch_timestamp)
+print("Date and Time:", formatted_date)
+# %%
+number = 1
+target = 3
+while number <= target:
+    print(number)
+    number += 1
+# %%

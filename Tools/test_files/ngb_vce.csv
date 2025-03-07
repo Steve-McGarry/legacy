@@ -1,4 +1,0 @@
-﻿account,name,model,profile,license,ha,site_user_name,site_user_email,street_address,city,county,postcode
-NGB,ngb_dc1,640,DC,100,y,Boss Man,boss@site.com,1 Church Street,Birmingham,Warwickshire,B15 2TT
-NGB,ngb_branch_type1,510_LTE,type1,50,n,Boss Lady,maam@site.com,666 London Road,London,Greater London,WC1E 7HU
-NGB,ngb_branch_type2,610,type2,30,n,Major London,major@site.com,8 Station Road,Chertsey,Surrey,KT16 8BE

@@ -1,0 +1,2 @@
+site_name,wan0_label,wan0_ip,wan0_type,wan0_isp,wan0_interface,backup/standby,wan1_label,wan1_ip,wan1_type,wan1_isp,wan1_interface,backup/standby,wan2_label,wan2_ip,wan2_type,wan2_isp,wan2_interface,backup/standby
+hostname,Kerv-USB-4G,95.129.20.19,WIRELESS,Wireless Logic,USB2,Yes,VCG-ADSL,31.117.100.198,WIRED,BT,GE6,No,Kerv-TRB,95.129.20.43,WIRELESS,Wireless Logic,GE5,No
