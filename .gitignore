@@ -163,3 +163,4 @@ cython_debug/
 test*.py
 adhoc.py
 test.ipynb
+Office/output/vce_configs/
