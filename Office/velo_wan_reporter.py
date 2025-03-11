@@ -45,9 +45,9 @@ with open(csv_file, mode='w', newline='') as file:
             
             #  generate csv content
             csv_line = edge_name
+            csv_line = f'{csv_line},{wan_count}'
             links = 1
             while links <= wan_count:
-                csv_line = f'{csv_line},{wan_count}'
                 csv_line = f'{csv_line},{network_list[links - 1][0]}'
                 csv_line = f'{csv_line},{network_list[links - 1][1]}'
                 csv_line = f'{csv_line},{network_list[links - 1][2]}'
