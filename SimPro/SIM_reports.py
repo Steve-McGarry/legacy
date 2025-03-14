@@ -25,9 +25,9 @@ iccid = 8931082222051647724 # temp for testing
 # jprint(sim_detail_data)
 
 ## > get sim usage (months previous 1/2/3 only)
-# sim_usage_data = get_sim_usage(sim_usage, iccid, 1)
-# jprint(sim_usage_data)
+sim_usage_data = get_sim_usage(sim_usage, iccid, 1)
+jprint(sim_usage_data)
 
 ## > get sim location
-sim_location_data = get_sim_location(iccid)
-jprint(sim_location_data)
+# sim_location_data = get_sim_location(iccid)
+# jprint(sim_location_data)
