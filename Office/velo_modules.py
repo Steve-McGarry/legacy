@@ -103,3 +103,44 @@ def wanLinkSummary(edgeSpecificProfile):
             network_list.append(sublist)
     
     return wan_count, network_list
+
+def getEdgeApps(vco,enterprise,api_key,edge_id,output_dir,timestamp,start,stop):
+    vco_hostname = vco
+    enterprise_id = enterprise
+    token = api_key
+    base_output = output_dir
+    suffix = timestamp
+    epoch_start = start
+    epoch_end = stop
+
+    apps_output = f'{base_output}/app_list-{suffix}.json'
+
+    # >>> API call
+    vco_url = f'https://{vco_hostname}/portal/rest/'
+    headers = {"Content-Type": "application/json", "Authorization": token}
+    get_apps = f'{vco_url}/metrics/getEdgeAppMetrics'
+
+    getApps_params = {
+                    'enterpriseId': enterprise_id,
+                    'id': edge_id,
+                    'interval': {
+                        "start": epoch_start,
+                        "end": epoch_end
+                    },
+                    # 'limit': 5,
+                    'resolveApplicationNames': True
+                    }
+
+    app_reponse = requests.post(get_apps, headers= headers, data=json.dumps(getApps_params))
+    a_resp = app_reponse.json()
+
+    with open(apps_output,'w') as file:
+        json.dump(a_resp, file)
+
+    # vce_dict = {}
+    # site_count = 0
+    # for i in a_resp:
+    #     site_count += 1
+    #     vce_dict[f'{i["name"]}'] = i["id"]
+
+    return a_resp

@@ -16,47 +16,59 @@ now = datetime.datetime.now()
 timestamp = now.strftime('%d%m%y')
 vce_dict_list = f'{output_dir}/vce_dict.txt'
 csv_file = f'{output_dir}/device_wan-links-{timestamp}.csv'
+app_list = f'{output_dir}/app_list-{timestamp}.json'
 
-# >>> start of code
+# >>> test VARs
+edge = 7228
+
+## >>> start of code
 clrscr()
 print('\nREPORT GENERATION STARTED\n')
-count,vce_dict = listEdges(vco,enterprise,api_key,output_dir,timestamp)
-with open(vce_dict_list,'w') as dict_file:
-    for key, value in vce_dict.items():
-        dict_file.write(f'{key}: {value}\n')
+# count,vce_dict = listEdges(vco,enterprise,api_key,output_dir,timestamp)
+# with open(vce_dict_list,'w') as dict_file:
+#     for key, value in vce_dict.items():
+#         dict_file.write(f'{key}: {value}\n')
 
-print('List of edges discovered...')
-print(f'Sites found: {count}\n')
+# print('List of edges discovered...')
+# print(f'Sites found: {count}\n')
 
-csv_headers = ['site_name', 'wan_total', 'wan0_label', 'wan0_ip', 'wan0_type', 'wan0_isp', 'wan0_interface', 'backup/standby',
-                'wan1_label', 'wan1_ip', 'wan1_type', 'wan1_isp', 'wan1_interface', 'backup/standby',
-                'wan2_label', 'wan2_ip', 'wan2_type', 'wan2_isp', 'wan2_interface', 'backup/standby']
+# csv_headers = ['site_name', 'wan_total', 'wan0_label', 'wan0_ip', 'wan0_type', 'wan0_isp', 'wan0_interface', 'backup/standby',
+#                 'wan1_label', 'wan1_ip', 'wan1_type', 'wan1_isp', 'wan1_interface', 'backup/standby',
+#                 'wan2_label', 'wan2_ip', 'wan2_type', 'wan2_isp', 'wan2_interface', 'backup/standby']
 
-#  open csv file add header then loop through devices
-with open(csv_file, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(csv_headers)
-        for key,value in vce_dict.items():
-            edge_name = key
-            edge_id = value
-            print(f'{edge_name} - {edge_id}')
-            edgeSpecificProfile = getEdgeConfig(vco,enterprise,api_key,output_dir,timestamp,edge_name,edge_id)
-            wan_count, network_list = wanLinkSummary(edgeSpecificProfile)
+##  open csv file add header then loop through devices
+# with open(csv_file, mode='w', newline='') as file:
+#         writer = csv.writer(file)
+#         writer.writerow(csv_headers)
+#         for key,value in vce_dict.items():
+#             edge_name = key
+#             edge_id = value
+#             print(f'{edge_name} - {edge_id}')
+#             edgeSpecificProfile = getEdgeConfig(vco,enterprise,api_key,output_dir,timestamp,edge_name,edge_id)
+#             wan_count, network_list = wanLinkSummary(edgeSpecificProfile)
             
-            #  generate csv content
-            csv_line = edge_name
-            csv_line = f'{csv_line},{wan_count}'
-            links = 1
-            while links <= wan_count:
-                csv_line = f'{csv_line},{network_list[links - 1][0]}'
-                csv_line = f'{csv_line},{network_list[links - 1][1]}'
-                csv_line = f'{csv_line},{network_list[links - 1][2]}'
-                csv_line = f'{csv_line},{network_list[links - 1][3]}'
-                csv_line = f'{csv_line},{network_list[links - 1][4]}'
-                csv_line = f'{csv_line},{network_list[links - 1][5]}'
-                links += 1
+#             #  generate csv content
+#             csv_line = edge_name
+#             csv_line = f'{csv_line},{wan_count}'
+#             links = 1
+#             while links <= wan_count:
+#                 csv_line = f'{csv_line},{network_list[links - 1][0]}'
+#                 csv_line = f'{csv_line},{network_list[links - 1][1]}'
+#                 csv_line = f'{csv_line},{network_list[links - 1][2]}'
+#                 csv_line = f'{csv_line},{network_list[links - 1][3]}'
+#                 csv_line = f'{csv_line},{network_list[links - 1][4]}'
+#                 csv_line = f'{csv_line},{network_list[links - 1][5]}'
+#                 links += 1
 
-            row_data = csv_line.split(',')
-            writer.writerow(row_data)
+#             row_data = csv_line.split(',')
+#             writer.writerow(row_data)
+
+## app list for top talkers of a given month
+epoch_start, epoch_end = epoch_month_start_end(2025,2)
+start = epoch_start * 1000
+end = epoch_end * 1000
+
+app_list = getEdgeApps(vco, enterprise, api_key, edge, output_dir, timestamp, start, end)
+jprint(app_list)
 
 print('\nREPORT COMPLETED 8-)')
