@@ -81,10 +81,9 @@ def wanLinkSummary(edgeSpecificProfile):
             count += 1
     # wan_links = edgeSpecificProfile['modules'][5]['data']['links']
     wan_count = (len(wan_links))
-    
+
     network_list = []
     for i in range(wan_count):
-            sim_count = 0
             sublist = []
             sublist.append(wan_links[i]['name'])
             sublist.append(wan_links[i]['publicIpAddress'])
@@ -104,8 +103,6 @@ def wanLinkSummary(edgeSpecificProfile):
                     sublist.append('No')
             network_list.append(sublist)
     
-    # print(wan_count) 
-
     return wan_count, network_list
 
 def getEdgeApps(vco,enterprise,api_key,edge_id,output_dir,timestamp,start,stop):

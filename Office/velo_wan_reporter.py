@@ -45,7 +45,7 @@ print('\nREPORT GENERATION STARTED\n')
 #             edge_id = value
 #             print(f'{edge_name} - {edge_id}')
 #             edgeSpecificProfile = getEdgeConfig(vco,enterprise,api_key,output_dir,timestamp,edge_name,edge_id)
-#             wan_count, network_list = wanLinkSummary(edgeSpecificProfile)
+#             wan_count, sim_count, network_list = wanLinkSummary(edgeSpecificProfile)
             
 #             #  generate csv content
 #             csv_line = edge_name

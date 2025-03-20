@@ -164,3 +164,4 @@ test*.py
 adhoc.py
 test.ipynb
 Office/output/vce_configs/
+SimPro/output/vce_configs/
