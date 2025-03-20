@@ -16,7 +16,7 @@ now = datetime.datetime.now()
 timestamp = now.strftime('%d%m%y')
 vce_dict_list = f'{output_dir}/vce_dict.txt'
 csv_file = f'{output_dir}/device_wan-links-{timestamp}.csv'
-app_list = f'{output_dir}/app_list-{timestamp}.json'
+# app_list = f'{output_dir}/app_list-{timestamp}.json'
 
 # >>> test VARs
 edge = 7228
@@ -64,11 +64,20 @@ print('\nREPORT GENERATION STARTED\n')
 #             writer.writerow(row_data)
 
 ## app list for top talkers of a given month
-epoch_start, epoch_end = epoch_month_start_end(2025,2)
+epoch_start, epoch_end = epoch_month_start_end(2025,2) # assume report to be for previous unless month populated
 start = epoch_start * 1000
 end = epoch_end * 1000
 
-app_list = getEdgeApps(vco, enterprise, api_key, edge, output_dir, timestamp, start, end)
-jprint(app_list)
+# app_list = getEdgeApps(vco, enterprise, api_key, edge, output_dir, timestamp, start, end)
+# jprint(app_list)
+
+site_list = ['241_Milton Keynes', '243_Bluewater', '051_Grafton_Streetr', '238_Angel', '234_Newcastle' ]
+
+for site in site_list:
+    app_list = f'{output_dir}/{site}-app_list-{timestamp}.json'
+    app_data = getEdgeApps(vco, enterprise, api_key, edge, output_dir, timestamp, start, end)
+    
+    with open(app_list,'w') as file:
+        json.dump(app_data, file)
 
 print('\nREPORT COMPLETED 8-)')
