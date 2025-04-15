@@ -6,7 +6,7 @@
 # # Print each item with a number starting from 1
 # for i, item in enumerate(items):
 #     print(f"{i}: {item}")
-
+import csv
 import json
 import sys
 
@@ -29,26 +29,60 @@ sim_usage_file = f'{output_dir}/sim_usage/sim_usage-{timestamp}.json'
 csv_file = f'{output_dir}/device_wan-links-{timestamp}.csv'
 top_csv = f'{output_dir}/top-3months-{timestamp}.csv'
 sim_site_map = f'{output_dir}/sim_site_map-{timestamp}.json'
+sim_site_map = f'{output_dir}/sim_site_map-150425.json'
 
-count,vce_dict = listEdges(vco,enterprise,api_key,output_dir,timestamp)
-print('List of edges discovered...')
-print(f'Sites found: {count}\n')
+# count,vce_dict = listEdges(vco,enterprise,api_key,output_dir,timestamp)
+# print('List of edges discovered...')
+# print(f'Sites found: {count}\n')
 # print(vce_dict)
 
 csv_headers = ['site_name', 'wan_total', 'wan0_label', 'wan0_ip', 'wan0_type', 'wan0_isp', 'wan0_interface', 'backup/standby',
                 'wan1_label', 'wan1_ip', 'wan1_type', 'wan1_isp', 'wan1_interface', 'backup/standby',
                 'wan2_label', 'wan2_ip', 'wan2_type', 'wan2_isp', 'wan2_interface', 'backup/standby', 'sim_total']
 
-import csv
 
-# Open the CSV file
+with open(sim_site_map, 'r') as jsonfile:
+    clean_site_sim_dict = json.load(jsonfile) 
+
+print(clean_site_sim_dict['002_Manchester_Arndale'])
+print(len((clean_site_sim_dict['002_Manchester_Arndale'])))
+
+wl_sim_count = 0
+
+# Open the velo wan summary CSV file
 with open(csv_file, mode='r', newline='') as csvfile:
     csv_reader = csv.reader(csvfile)
-    
+    next(csv_reader) # skip header
     # Iterate through each row in the CSV file
-    for row in csv_reader:
-        print(row)
-        print(row[-1])
+    for i, row in enumerate(csv_reader):
+        if i < 5:  # Check if the current line number is less than 5
+            # print(row)
+            velo_sim_count = row[-1]
+            site_name = row[0]
+            print('\nVelo stats')
+            print(velo_sim_count,site_name)
+            print('WL stats')
+            wl_sim_count = len(clean_site_sim_dict[site_name])
+            print(wl_sim_count)
+        else:
+            break
+    # rows = 0
+    # for row in csv_reader:
+    #     while rows < 6:
+    #         print(row)
+    #     #     print(rows)
+    #     #     print(row)
+    #     #     # velo_sim_count = row[-1]
+    #     #     # site_name = row[0]
+    #     #     # print(site_name)
+    #     #     # print(type(site_name))
+    #     #     # print(clean_site_sim_dict[site_name])
+    #     #     # wl_sim_count = len[clean_site_sim_dict[site_name]]
+    #     #     # print(f'Site: {site_name} - Velo sims: {velo_sim_count} - WL sims {wl_sim_count}')
+    #         rows += 1
+
+#         print(row)
+#         print(row[-1])
 
 # with open(csv_file, mode='w', newline='') as file:
 #         writer = csv.writer(file)
