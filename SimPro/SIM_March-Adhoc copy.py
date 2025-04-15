@@ -18,6 +18,7 @@ sim_list = f'{output_dir}/sim_list-{timestamp}.json'
 iccid_list = f'{output_dir}/sim_list_iccid-{timestamp}.json'
 sim_details = f'{output_dir}/sim_detail-{timestamp}.json'
 sim_usage_file = f'{output_dir}/sim_usage/sim_usage-{timestamp}.json'
+estate_usage_file = f'{output_dir}/sim_usage/estate_usage-{timestamp}.json'
 csv_file = f'{output_dir}/device_wan-links-{timestamp}.csv'
 top_csv = f'{output_dir}/top-3months-{timestamp}.csv'
 sim_site_map = f'{output_dir}/sim_site_map-{timestamp}.json'
@@ -100,95 +101,96 @@ for iccid in iccid_nums:
             else:
                 sim_usage[iccid] = [result]
 
+print(sim_usage)
 # print(f'SIM usage\n{sim_usage}') # test
 # ## Iterate through the site tuples > dict [site_name:[iccid1, iccid2...]]
-site_sim_dict = {}
-for key, value in sim_tuple_list:
-    # print(key) # test
-    if key in site_sim_dict:
-        site_sim_dict[key].append(value)
-    else:
-        site_sim_dict[key] = [value]
+# site_sim_dict = {}
+# for key, value in sim_tuple_list:
+#     # print(key) # test
+#     if key in site_sim_dict:
+#         site_sim_dict[key].append(value)
+#     else:
+#         site_sim_dict[key] = [value]
 
-print(site_sim_dict) # test
-## remove any blank, type None or not starting without a store code
-clean_site_sim_dict = {key: value for key, value in site_sim_dict.items() if isinstance(key, str) and key and key[0].isdigit()}
-# print(clean_site_sim_dict) # test
+# print(site_sim_dict) # test
+# ## remove any blank, type None or not starting without a store code
+# clean_site_sim_dict = {key: value for key, value in site_sim_dict.items() if isinstance(key, str) and key and key[0].isdigit()}
+# # print(clean_site_sim_dict) # test
 
-with open(sim_site_map, 'w') as json_file:
-    json.dump(clean_site_sim_dict, json_file, indent=4)
+# with open(sim_site_map, 'w') as json_file:
+#     json.dump(clean_site_sim_dict, json_file, indent=4)
 
-# ## Print dictionary
-# print(f'clean sites\n{clean_site_sim_dict}') # test
-site_keys = clean_site_sim_dict.keys()
+# # ## Print dictionary
+# # print(f'clean sites\n{clean_site_sim_dict}') # test
+# site_keys = clean_site_sim_dict.keys()
 
-site_total = {}
+# site_total = {}
 
-## create previous month usage data
-for site_name in site_keys:
-    sub_list = [0,0]
-    # print(f'site name{site_name}') # test
-    # print(f'site details \n {clean_site_sim_dict[site_name]}') # tests
-    for i in clean_site_sim_dict[site_name]:
-        temp_list = []
-        total = int(sim_usage[str(i)][2].split('_')[1]) # Feb number
-        converted = bytes_to_gigabytes(total)
-        # print(total) # test
-        temp_list.append(converted)
+# ## create previous month usage data
+# for site_name in site_keys:
+#     sub_list = [0,0]
+#     # print(f'site name{site_name}') # test
+#     # print(f'site details \n {clean_site_sim_dict[site_name]}') # tests
+#     for i in clean_site_sim_dict[site_name]:
+#         temp_list = []
+#         total = int(sim_usage[str(i)][2].split('_')[1]) # Feb number
+#         converted = bytes_to_gigabytes(total)
+#         # print(total) # test
+#         temp_list.append(converted)
 
-        ## last month compared to preceeding
-        delta = int(sim_usage[str(i)][2].split('_')[1]) - int(sim_usage[str(i)][1].split('_')[1]) # feb - jan
-        trend = bytes_to_gigabytes(delta)
-        # print(delta) # test
-        temp_list.append(trend)
-        # consolidate values for each index: total & delta
-        for i in 0,1:
-            sub_list[i] = round(sub_list[i] + temp_list[i],2)
-    # update master after site completed
-    site_total[site_name] = sub_list
+#         ## last month compared to preceeding
+#         delta = int(sim_usage[str(i)][2].split('_')[1]) - int(sim_usage[str(i)][1].split('_')[1]) # feb - jan
+#         trend = bytes_to_gigabytes(delta)
+#         # print(delta) # test
+#         temp_list.append(trend)
+#         # consolidate values for each index: total & delta
+#         for i in 0,1:
+#             sub_list[i] = round(sub_list[i] + temp_list[i],2)
+#     # update master after site completed
+#     site_total[site_name] = sub_list
 
-print(site_total)
-with open(sim_usage_file, 'w') as json_file:
-    json.dump(site_total, json_file, indent=4)
+# print(site_total)
+# with open(sim_usage_file, 'w') as json_file:
+#     json.dump(site_total, json_file, indent=4)
 
-top_ranking = sorted(site_total.items(), key=lambda x: x[1], reverse=True)[:10]
+# top_ranking = sorted(site_total.items(), key=lambda x: x[1], reverse=True)[:10]
 
-## Print the top 5 highest items
-top_consumers = []
-print("Top 10 highest items:")
-for item, value in top_ranking:
-    print(f"{item}: {value}")
-    top_consumers.append(item)
+# ## Print the top 5 highest items
+# top_consumers = []
+# print("Top 10 highest items:")
+# for item, value in top_ranking:
+#     print(f"{item}: {value}")
+#     top_consumers.append(item)
 
-## create csv for top consumers for previous 3 months
-top_csv_headers = ['site_name', 'month1', 'month2', 'month3', 'month4']
-with open(top_csv, mode='w', newline='') as file:
-    writer = csv.writer(file)
-    writer.writerow(top_csv_headers)
-    for t in top_consumers:
-        # sim1 = [0,0,0]
-        # sim2 = [0,0,0]
-        sim1 = [0,0,0,0]
-        sim2 = [0,0,0,0]
-        count = 1
+# ## create csv for top consumers for previous 3 months
+# top_csv_headers = ['site_name', 'month1', 'month2', 'month3', 'month4']
+# with open(top_csv, mode='w', newline='') as file:
+#     writer = csv.writer(file)
+#     writer.writerow(top_csv_headers)
+#     for t in top_consumers:
+#         # sim1 = [0,0,0]
+#         # sim2 = [0,0,0]
+#         sim1 = [0,0,0,0]
+#         sim2 = [0,0,0,0]
+#         count = 1
 
-        for s in clean_site_sim_dict[t]: # assumed max of 2 SIMs
-            if count == 1:
-                summary = sim1
-            else:
-                summary = sim2
+#         for s in clean_site_sim_dict[t]: # assumed max of 2 SIMs
+#             if count == 1:
+#                 summary = sim1
+#             else:
+#                 summary = sim2
 
-            for n in 0,1,2,3:
-                summary[n] = int(sim_usage[s][n].split('_')[1])
-            count += 1
+#             for n in 0,1,2,3:
+#                 summary[n] = int(sim_usage[s][n].split('_')[1])
+#             count += 1
         
-        result = []
-        for i in range(4): # assumed previous month & current mtd required else range(3) for only historical
-            result.append(sim1[i] + sim2[i])
+#         result = []
+#         for i in range(4): # assumed previous month & current mtd required else range(3) for only historical
+#             result.append(sim1[i] + sim2[i])
 
-        top_csv_line = f'{t},{result[0]},{result[1]},{result[2]}'  # month1, month2, month3
-        top_csv_line = f'{t},{result[0]},{result[1]},{result[2]},{result[3]}' # month1, month2, month3, month4-mtd
+#         top_csv_line = f'{t},{result[0]},{result[1]},{result[2]}'  # month1, month2, month3
+#         top_csv_line = f'{t},{result[0]},{result[1]},{result[2]},{result[3]}' # month1, month2, month3, month4-mtd
 
-        row_data = top_csv_line.split(',')
-        writer.writerow(row_data)
-    print(f'\nCSV creation completed for Top Talkers')
+#         row_data = top_csv_line.split(',')
+#         writer.writerow(row_data)
+#     print(f'\nCSV creation completed for Top Talkers')

@@ -45,10 +45,23 @@ sim_usage = {}
 #         #     sim_usage[iccid].append(result)
 #         # else:
 #         #     sim_usage[iccid] = [result]
-for m in 12,1,2,3:
-    sim_usage_data = get_sim_usage(sim_usage, 89444611503501245581, m)
-    data =sim_usage_data['sims'][0]['month_to_date_bytes_down']
-    print(f'For Month {m} data consumed was: {data}' )
+# for s in [8944110068473483720,8944303353138323118,89883040000030861962,89883040000030861970]:
+for s in [89883040000030861962,89883040000030861970]:
+    site = [8944110068473483720,8944303353138323118]
+    if s in site:
+        location = '193_Nottingham'
+    else:
+        location = '239_Nottingham Victoria'
+    print(f'This SIM {s} is allocated at {location}')
+    for m in 12,1,2,3:
+        sim_usage_data = get_sim_usage(sim_usage, s, m)
+        jprint(sim_usage_data)
+        down = (int(sim_usage_data['sims'][0]['month_to_date_bytes_down']))
+        up = (int(sim_usage_data['sims'][0]['month_to_date_bytes_up']))
+        sum = up + down
+        data =bytes_to_gigabytes(sum)
+        # print(f'Data for {location}:{s}')
+        print(f'For Month {m} data consumed was: {data}' )
     # jprint(sim_usage_data['sims'][0]['month_to_date_bytes_down'])
 # print(sim_usage_data['sims'][0]['month_to_date_bytes_down'])
 
