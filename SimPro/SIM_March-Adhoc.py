@@ -25,17 +25,19 @@ sim_site_map = f'{output_dir}/sim_site_map-{timestamp}.json'
 ## >>>>> START OF CODE
 clrscr()
 print('\nREPORT GENERATION STARTED\n')
-# count,vce_dict = listEdges(vco,enterprise,api_key,output_dir,timestamp)
-# print('List of edges discovered...')
-# print(f'Sites found: {count}\n')
 
 ##  open csv file add header then loop through devices
 csv_headers = ['site_name', 'wan_total', 'wan0_label', 'wan0_ip', 'wan0_type', 'wan0_isp', 'wan0_interface', 'backup/standby',
                 'wan1_label', 'wan1_ip', 'wan1_type', 'wan1_isp', 'wan1_interface', 'backup/standby',
                 'wan2_label', 'wan2_ip', 'wan2_type', 'wan2_isp', 'wan2_interface', 'backup/standby', 'sim_total']
 
-## VELO SUMMARY info to link with WL summary later
-# velo_brief = {}
+## VELO SUMMARY info to link with WL summary later (last column in CSV = # of WL SIMs in use)
+# > get device list
+# count,vce_dict = listEdges(vco,enterprise,api_key,output_dir,timestamp)
+# print('List of edges discovered...')
+# print(f'Sites found: {count}\n')
+
+# > extract wan information for each device
 # with open(csv_file, mode='w', newline='') as file:
 #         writer = csv.writer(file)
 #         writer.writerow(csv_headers)
@@ -50,39 +52,45 @@ csv_headers = ['site_name', 'wan_total', 'wan0_label', 'wan0_ip', 'wan0_type', '
 #             csv_line = edge_name
 #             csv_line = f'{csv_line},{wan_count}'
 #             links = 1
+#             wl_links = 0
 
 #             while links <= wan_count:
-#                 csv_line = f'{csv_line},{network_list[links - 1][0]}'
-#                 csv_line = f'{csv_line},{network_list[links - 1][1]}'
-#                 csv_line = f'{csv_line},{network_list[links - 1][2]}'
-#                 csv_line = f'{csv_line},{network_list[links - 1][3]}'
-#                 csv_line = f'{csv_line},{network_list[links - 1][4]}'
-#                 csv_line = f'{csv_line},{network_list[links - 1][5]}'
+#                 csv_line = f'{csv_line},{network_list[links - 1][0]}'# label
+#                 csv_line = f'{csv_line},{network_list[links - 1][1]}'#ip
+#                 csv_line = f'{csv_line},{network_list[links - 1][2]}'#type
+#                 csv_line = f'{csv_line},{network_list[links - 1][3]}'#isp
+#                 if network_list[links - 1][3] == 'Wireless Logic':
+#                     wl_links += 1
+#                 csv_line = f'{csv_line},{network_list[links - 1][4]}'#interface
+#                 csv_line = f'{csv_line},{network_list[links - 1][5]}'#standby
 #                 links += 1
-
+            
+#             csv_line = f'{csv_line},{wl_links}'#append each row with number of WL links
 #             row_data = csv_line.split(',')
 #             writer.writerow(row_data)
-
-# for e in velo_brief.items():
-#     print(e)
 
 ## WL SUMMARY to link with velo summary
 ## > get filtered sims list
 sims_data, iccid_nums, sim_count = get_sims(sim_list, iccid_list)
 print(f'Total number of SIMs listed: {sim_count}\n')
 
-iccid_nums_short = iccid_nums[:5] # test 
+# iccid_nums_short = iccid_nums[:5] # test 
 sim_tuple_list = []
 sim_usage = {}
 count = 1
-# for iccid in iccid_nums_short:
+
+## > Allocate mapping of SIM to site & collect usage data
+# for iccid in iccid_nums_short: #test
 for iccid in iccid_nums:
     print(f'> Processing SIM num: {count}   {iccid}')
     details = sim_detail_extract(iccid)
-    sim_tuple_list.append((details[0]['custom_field2'],iccid)) # tuple of site,iccid
     count += 1
-    ## get usage data for each sim; 12,1,2,3 months dict[iccid:[12,1,2,3]]
-    for m in 12,1,2,3:
+    ## generate SIM mappings; tuple of site,iccid
+    sim_tuple_list.append((details[0]['custom_field2'],iccid)) 
+    
+    ## get usage data for each sim; 1,2,3,4 months dict[iccid:[1,2,3,4]]
+    ## *** auto month calulator required ***
+    for m in 1,2,3,4:
         try:
             sim_usage_data = get_sim_usage(sim_usage, iccid, m)
             down = int(sim_usage_data['sims'][0]['month_to_date_bytes_down'])
@@ -93,7 +101,7 @@ for iccid in iccid_nums:
             else:
                 sim_usage[iccid] = [result]
         except (KeyError, TypeError, IndexError) as e:
-            print(f"Error processing SIM usage data for month {iccid}: {e}")
+            print(f"Error processing SIM usage data for month {iccid}: {e}") #new sim no history
             result = f'0:0_0'
             if iccid in sim_usage:
                 sim_usage[iccid].append(result)
@@ -101,7 +109,7 @@ for iccid in iccid_nums:
                 sim_usage[iccid] = [result]
 
 # print(f'SIM usage\n{sim_usage}') # test
-# ## Iterate through the site tuples > dict [site_name:[iccid1, iccid2...]]
+# ## Generate complete site/SIM mappings; iterate through the tuples of site,iccid > dict [site_name:[iccid1, iccid2...]]
 site_sim_dict = {}
 for key, value in sim_tuple_list:
     # print(key) # test
@@ -121,6 +129,8 @@ with open(sim_site_map, 'w') as json_file:
 # ## Print dictionary
 # print(f'clean sites\n{clean_site_sim_dict}') # test
 site_keys = clean_site_sim_dict.keys()
+
+## *** validate SIMs allocated to a site with number of links in Velo Orchestrator ***
 
 site_total = {}
 
