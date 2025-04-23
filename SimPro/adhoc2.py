@@ -26,10 +26,12 @@ sim_list = f'{output_dir}/sim_list-{timestamp}.json'
 iccid_list = f'{output_dir}/sim_list_iccid-{timestamp}.json'
 sim_details = f'{output_dir}/sim_detail-{timestamp}.json'
 sim_usage_file = f'{output_dir}/sim_usage/sim_usage-{timestamp}.json'
-csv_file = f'{output_dir}/device_wan-links-{timestamp}.csv'
+csv_file = f'{output_dir}/device_wan-links-230425.csv'
+# csv_file = f'{output_dir}/device_wan-links-{timestamp}.csv'
 top_csv = f'{output_dir}/top-3months-{timestamp}.csv'
-sim_site_map = f'{output_dir}/sim_site_map-{timestamp}.json'
-sim_site_map = f'{output_dir}/sim_site_map-150425.json'
+sim_site_map = f'{output_dir}/sim_site_map-230425.json'
+# sim_site_map = f'{output_dir}/sim_site_map-{timestamp}.json'
+keyerrors = f'{output_dir}/keyerrors.txt'
 
 # count,vce_dict = listEdges(vco,enterprise,api_key,output_dir,timestamp)
 # print('List of edges discovered...')
@@ -40,12 +42,12 @@ csv_headers = ['site_name', 'wan_total', 'wan0_label', 'wan0_ip', 'wan0_type', '
                 'wan1_label', 'wan1_ip', 'wan1_type', 'wan1_isp', 'wan1_interface', 'backup/standby',
                 'wan2_label', 'wan2_ip', 'wan2_type', 'wan2_isp', 'wan2_interface', 'backup/standby', 'sim_total']
 
-
+## clean site mapping from WL
 with open(sim_site_map, 'r') as jsonfile:
     clean_site_sim_dict = json.load(jsonfile) 
 
-print(clean_site_sim_dict['002_Manchester_Arndale'])
-print(len((clean_site_sim_dict['002_Manchester_Arndale'])))
+# print(clean_site_sim_dict['002_Manchester_Arndale'])
+# print(len((clean_site_sim_dict['002_Manchester_Arndale'])))
 
 wl_sim_count = 0
 
@@ -55,15 +57,22 @@ with open(csv_file, mode='r', newline='') as csvfile:
     next(csv_reader) # skip header
     # Iterate through each row in the CSV file
     for i, row in enumerate(csv_reader):
-        if i < 5:  # Check if the current line number is less than 5
-            # print(row)
-            velo_sim_count = row[-1]
-            site_name = row[0]
-            print('\nVelo stats')
-            print(velo_sim_count,site_name)
-            print('WL stats')
-            wl_sim_count = len(clean_site_sim_dict[site_name])
-            print(wl_sim_count)
+        if i < 1000:  # Check if the current line number is less than 5
+            try:
+                # print(row)
+                velo_sim_count = row[-1]
+                site_name = row[0]
+                print('\nVelo stats')
+                print(velo_sim_count,site_name)
+                print('WL stats')
+                wl_sim_count = len(clean_site_sim_dict[site_name])
+                print(wl_sim_count)
+            except KeyError as e:
+                print(f"KeyError encountered: {e}")
+                with open(keyerrors, mode='a') as textfile:
+                    textfile.write(f"{e}\n")
+            except Exception as e:
+                print(f"An error occurred: {e}")
         else:
             break
     # rows = 0
