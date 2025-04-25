@@ -138,15 +138,7 @@ def getEdgeApps(vco,enterprise,api_key,edge_id,output_dir,timestamp,start,stop):
     with open(apps_output,'w') as file:
         json.dump(a_resp, file)
 
-    # vce_dict = {}
-    # site_count = 0
-    # for i in a_resp:
-    #     site_count += 1
-    #     vce_dict[f'{i["name"]}'] = i["id"]
-
     return a_resp
-
-
 
 def getQOE(vco,enterprise,api_key,edge_id,output_dir,timestamp,start,stop):
     vco_hostname = vco
@@ -157,26 +149,27 @@ def getQOE(vco,enterprise,api_key,edge_id,output_dir,timestamp,start,stop):
     epoch_start = start
     epoch_end = stop
 
-    apps_output = f'{base_output}/app_list-{suffix}.json'
+    qoe_output = f'{base_output}/qoe_day-{suffix}.json'
 
     # >>> API call
     vco_url = f'https://{vco_hostname}/portal/rest/'
     headers = {"Content-Type": "application/json", "Authorization": token}
-    qoe = f'{vco_url}/linkQualityEvent/getLinkQualityEvents'
+    get_qoe = f'{vco_url}/linkQualityEvent/getLinkQualityEvents'
+    
 
-    getApps_params = {
+    getQOE_params = {
                     'enterpriseId': enterprise_id,
-                    'id': edge_id,
+                    'edgeId': edge_id,
                     'interval': {
-                        "start": epoch_start,
-                        "end": epoch_end
-                    },
-                    # 'limit': 5,
-                    'resolveApplicationNames': True
+                        "end": epoch_end,
+                        "start": epoch_start
+                    }
                     }
 
-    app_reponse = requests.post(get_apps, headers= headers, data=json.dumps(getApps_params))
-    a_resp = app_reponse.json()
+    qoe_reponse = requests.post(get_qoe, headers=headers, data=json.dumps(getQOE_params))
+    q_resp = qoe_reponse.json()
 
-    with open(apps_output,'w') as file:
-        json.dump(a_resp, file)
+    with open(qoe_output,'w') as file:
+        json.dump(q_resp, file)
+
+    return q_resp
