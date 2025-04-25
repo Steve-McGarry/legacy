@@ -33,101 +33,101 @@ csv_headers = ['site_name', 'wan_total', 'wan0_label', 'wan0_ip', 'wan0_type', '
 
 ## VELO SUMMARY info to link with WL summary later (last column in CSV = # of WL SIMs in use)
 # > get device list
-count,vce_dict = listEdges(vco,enterprise,api_key,output_dir,timestamp)
-print('List of edges discovered...')
-print(f'Sites found: {count}\n')
+# count,vce_dict = listEdges(vco,enterprise,api_key,output_dir,timestamp)
+# print('List of edges discovered...')
+# print(f'Sites found: {count}\n')
 
-# > extract wan information for each device
-with open(csv_file, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(csv_headers)
-        for key,value in vce_dict.items():
-            edge_name = key
-            edge_id = value
-            print(f'{edge_name} - {edge_id}')
-            edgeSpecificProfile = getEdgeConfig(vco,enterprise,api_key,output_dir,timestamp,edge_name,edge_id)
-            wan_count, network_list = wanLinkSummary(edgeSpecificProfile)
+# # > extract wan information for each device
+# with open(csv_file, mode='w', newline='') as file:
+#         writer = csv.writer(file)
+#         writer.writerow(csv_headers)
+#         for key,value in vce_dict.items():
+#             edge_name = key
+#             edge_id = value
+#             print(f'{edge_name} - {edge_id}')
+#             edgeSpecificProfile = getEdgeConfig(vco,enterprise,api_key,output_dir,timestamp,edge_name,edge_id)
+#             wan_count, network_list = wanLinkSummary(edgeSpecificProfile)
             
-            #  generate csv content
-            csv_line = edge_name
-            csv_line = f'{csv_line},{wan_count}'
-            links = 1
-            wl_links = 0
+#             #  generate csv content
+#             csv_line = edge_name
+#             csv_line = f'{csv_line},{wan_count}'
+#             links = 1
+#             wl_links = 0
 
-            while links <= wan_count:
-                csv_line = f'{csv_line},{network_list[links - 1][0]}'# label
-                csv_line = f'{csv_line},{network_list[links - 1][1]}'#ip
-                csv_line = f'{csv_line},{network_list[links - 1][2]}'#type
-                csv_line = f'{csv_line},{network_list[links - 1][3]}'#isp
-                if network_list[links - 1][3] == 'Wireless Logic':
-                    wl_links += 1
-                csv_line = f'{csv_line},{network_list[links - 1][4]}'#interface
-                csv_line = f'{csv_line},{network_list[links - 1][5]}'#standby
-                links += 1
+#             while links <= wan_count:
+#                 csv_line = f'{csv_line},{network_list[links - 1][0]}'# label
+#                 csv_line = f'{csv_line},{network_list[links - 1][1]}'#ip
+#                 csv_line = f'{csv_line},{network_list[links - 1][2]}'#type
+#                 csv_line = f'{csv_line},{network_list[links - 1][3]}'#isp
+#                 if network_list[links - 1][3] == 'Wireless Logic':
+#                     wl_links += 1
+#                 csv_line = f'{csv_line},{network_list[links - 1][4]}'#interface
+#                 csv_line = f'{csv_line},{network_list[links - 1][5]}'#standby
+#                 links += 1
             
-            csv_line = f'{csv_line},{wl_links}'#append each row with number of WL links
-            row_data = csv_line.split(',')
-            writer.writerow(row_data)
+#             csv_line = f'{csv_line},{wl_links}'#append each row with number of WL links
+#             row_data = csv_line.split(',')
+#             writer.writerow(row_data)
 
 ## WL SUMMARY to link with velo summary
 ## > get filtered sims list
-# sims_data, iccid_nums, sim_count = get_sims(sim_list, iccid_list)
-# print(f'Total number of SIMs listed: {sim_count}\n')
+sims_data, iccid_nums, sim_count = get_sims(sim_list, iccid_list)
+print(f'Total number of SIMs listed: {sim_count}\n')
 
-# # iccid_nums_short = iccid_nums[:5] # test 
-# sim_tuple_list = []
-# sim_usage = {}
-# count = 1
+# iccid_nums_short = iccid_nums[:5] # test 
+sim_tuple_list = []
+sim_usage = {}
+count = 1
 
-# ## > Allocate mapping of SIM to site & collect usage data
-# # for iccid in iccid_nums_short: #test
-# for iccid in iccid_nums:
-#     print(f'> Processing SIM num: {count}   {iccid}')
-#     details = sim_detail_extract(iccid)
-#     count += 1
-#     ## generate SIM mappings; tuple of site,iccid
-#     sim_tuple_list.append((details[0]['custom_field2'],iccid)) 
+## > Allocate mapping of SIM to site & collect usage data
+# for iccid in iccid_nums_short: #test
+for iccid in iccid_nums:
+    print(f'> Processing SIM num: {count}   {iccid}')
+    details = sim_detail_extract(iccid)
+    count += 1
+    ## generate SIM mappings; tuple of site,iccid
+    sim_tuple_list.append((details[0]['custom_field2'],iccid)) 
     
-#     ## get usage data for each sim; 1,2,3,4 months dict[iccid:[1,2,3,4]]
-#     ## *** auto month calulator required ***
-#     for m in 1,2,3,4:
-#         try:
-#             sim_usage_data = get_sim_usage(sim_usage, iccid, m)
-#             down = int(sim_usage_data['sims'][0]['month_to_date_bytes_down'])
-#             up = int(sim_usage_data['sims'][0]['month_to_date_bytes_up'])
-#             result = f'{down}:{up}_{up + down}'
-#             if iccid in sim_usage:
-#                 sim_usage[iccid].append(result)
-#             else:
-#                 sim_usage[iccid] = [result]
-#         except (KeyError, TypeError, IndexError) as e:
-#             print(f"Error processing SIM usage data for month {iccid}: {e}") #new sim no history
-#             result = f'0:0_0'
-#             if iccid in sim_usage:
-#                 sim_usage[iccid].append(result)
-#             else:
-#                 sim_usage[iccid] = [result]
+    ## get usage data for each sim; 1,2,3,4 months dict[iccid:[1,2,3,4]]
+    ## *** auto month calulator required ***
+    for m in 1,2,3,4:
+        try:
+            sim_usage_data = get_sim_usage(sim_usage, iccid, m)
+            down = int(sim_usage_data['sims'][0]['month_to_date_bytes_down'])
+            up = int(sim_usage_data['sims'][0]['month_to_date_bytes_up'])
+            result = f'{down}:{up}_{up + down}'
+            if iccid in sim_usage:
+                sim_usage[iccid].append(result)
+            else:
+                sim_usage[iccid] = [result]
+        except (KeyError, TypeError, IndexError) as e:
+            print(f"Error processing SIM usage data for month {iccid}: {e}") #new sim no history
+            result = f'0:0_0'
+            if iccid in sim_usage:
+                sim_usage[iccid].append(result)
+            else:
+                sim_usage[iccid] = [result]
 
-# # print(f'SIM usage\n{sim_usage}') # test
-# # ## Generate complete site/SIM mappings; iterate through the tuples of site,iccid > dict [site_name:[iccid1, iccid2...]]
-# site_sim_dict = {}
-# for key, value in sim_tuple_list:
-#     if key in site_sim_dict:
-#         site_sim_dict[key].append(value)
-#     else:
-#         site_sim_dict[key] = [value]
+# print(f'SIM usage\n{sim_usage}') # test
+# ## Generate complete site/SIM mappings; iterate through the tuples of site,iccid > dict [site_name:[iccid1, iccid2...]]
+site_sim_dict = {}
+for key, value in sim_tuple_list:
+    if key in site_sim_dict:
+        site_sim_dict[key].append(value)
+    else:
+        site_sim_dict[key] = [value]
 
-# # print(site_sim_dict) # test
-# ## remove any blank, type None or not starting without a store code
-# clean_site_sim_dict = {key: value for key, value in site_sim_dict.items() if isinstance(key, str) and key and key[0].isdigit()}
-# # print(clean_site_sim_dict) # test
+# print(site_sim_dict) # test
+## remove any blank, type None or not starting without a store code
+clean_site_sim_dict = {key: value for key, value in site_sim_dict.items() if isinstance(key, str) and key and key[0].isdigit()}
+# print(clean_site_sim_dict) # test
 
-# with open(sim_site_map, 'w') as json_file:
-#     json.dump(clean_site_sim_dict, json_file, indent=4)
+with open(sim_site_map, 'w') as json_file:
+    json.dump(clean_site_sim_dict, json_file, indent=4)
 
-# # ## Print dictionary
-# # print(f'clean sites\n{clean_site_sim_dict}') # test
-# site_keys = clean_site_sim_dict.keys()
+# ## Print dictionary
+# print(f'clean sites\n{clean_site_sim_dict}') # test
+site_keys = clean_site_sim_dict.keys()
 
 ## >>>> CONTINUE FROM HERE !!!!!
 ## *** validate SIMs allocated to a site with number of links in Velo Orchestrator ***
