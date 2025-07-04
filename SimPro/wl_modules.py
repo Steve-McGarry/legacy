@@ -14,7 +14,7 @@ get_sim_usage_history_api = 'https://simpro4.wirelesslogic.com/api/v3/sims/usage
 get_cell_location_api = 'https://simpro4.wirelesslogic.com/api/v3/sim/cell-location'
 
 def wl_lookup(api_name):
-    # extract api key
+    # extract api key for simpro
     auth_file = '/Users/stevemcgarry/Downloads/MCSHINE/simpro.json'
 
     with open(auth_file) as file:
