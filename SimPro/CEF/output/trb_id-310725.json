@@ -1,9 +1,11 @@
+Hull North (HES) : 1744808
+Sheffield GM (SHGM) : 1744737
 Tamlite Zone D (TAMD) : 1720080
 Tamlite Zone B (TAMB) : 1715564
-Redditch Zone D : 1704363
+Redditch Zone D (RED) : 1704363
 XCITE Indoor (XCIT) : 1696417
-Proteus Ind / Tamlite Tech (PROI) : 1665195
-Proteus Industrial (PROI) : 1664805
+Proteus Ind / Tamlite Tech (PROI1) - PROI : 1665195
+Proteus Industrial (PROI2) - PROI : 1664805
 Tamtec Design (TAMD) : 1663179
 Tamtec (TAMT) : 1663086
 Irvine(IRV) : 1646716
@@ -14,7 +16,7 @@ Grays (GRA) : 1619589
 Salford Quay(SAL) : 1613185
 Georgina Mackie House (GMH) : 1607642
 Stirling (STI) : 1604137
-Edinburgh Branch(EDI) : 1604110
+Edinburgh Branch (EDI) : 1604110
 Thanet (THN) : 1580730
 Chessington (CSS) : 1571139
 York Accounts(YORAC) : 1566720
@@ -23,7 +25,7 @@ Warwick Branch and Accounts (WAW) : 1556774
 Falkirk(FKK) : 1553875
 Ripon(RPN) : 1519319
 Beckenham(BRM) : 1507767
-Antequera(ANTE) : 1507372
+Antequerra(ANTE) : 1507372
 Fuengirola(FUEN) : 1506759
 Malaga(MALA) : 1506403
 CEFCO/Fusion (FUSE) : 1498703
@@ -58,7 +60,7 @@ Murcia (MUR) : 1413945
 Scotland East GM(SCOTGMEAST) : 1411055
 San Javier (SAN) : 1411027
 Benissa (BEN) : 1399133
-CEF-Online CEFONL : 1395843
+CEF-Online (CEFONL) : 1395843
 Bluestem (BLUE) : 1387450
 Halesowen (HAL) : 1373460
 Uxbridge (UXB) : 1364943
@@ -91,11 +93,11 @@ Harrow (HAW) : 1324155
 Blackburn (BBN) : 1324101
 Dagenham (DAG) : 1323098
 Fareham (FAR) : 1322977
-Glenrothes : 1321724
+Glenrothes (GLE) : 1321724
 Perth(PTH) : 1321691
 Arbroath(ARB) : 1321619
 Goole (GOL) : 1317640
-Edinburgh South : 1317511
+Edinburgh South (EDS) : 1317511
 Bilston (BIL) : 1316833
 Edinburgh Regional Office (EDIRAO) : 1315751
 Altrincham (ALT) : 1315585
@@ -108,10 +110,10 @@ Galashiels(GLS) : 1312088
 Enfield(ENF) : 1311977
 Heathrow North (STL) : 1310185
 Omagh (OMA) : 1309964
-Workington(WKT) : 1308903
+Workington (WKT) : 1308903
 Dumfries (DUM) : 1308006
 Kilmarnock (KIL) : 1307945
-Nelson : 1305042
+Nelson (NEL) : 1305042
 Londonderry(LDY) : 1300298
 Coleraine(CLR) : 1300269
 Ballymena(BMA) : 1300230
@@ -125,7 +127,7 @@ Cardiff (CDF) : 1289256
 Naas (NAS) : 1286392
 Red Cow (RCW) : 1286372
 Dublin City Centre (DCC) : 1286299
-CFC-Dartford : 1283948
+CFC-Dartford (CFCD) : 1283948
 Barry(BAR) : 1283866
 Cwmbran(PON) : 1283732
 Littlehampton(LIT) : 1283370
@@ -213,7 +215,7 @@ Dartford Bridge (GVE) : 1229238
 Hemel Hempstead (HEM) : 1228522
 Melton Mowbray (MTM) : 1228445
 Romford (ROM) : 1228385
-Cartagena : 1228174
+Cartagena (CART) : 1228174
 Wrexham (WRE) : 1227983
 Northwich (NWT) : 1227560
 Hastings (HTG) : 1227551
@@ -221,7 +223,7 @@ Beccles(BEC) : 1227543
 Middleton(MID) : 1227535
 LongwellGreen(KEY) : 1227532
 Bath(BTH) : 1227529
-Worcester(WOR) : 1227521
+Worcester (WOR) : 1227521
 Redhill(RDL) : 1227410
 Berwick(BTD) : 1227404
 Wallsend(WAL) : 1227065
@@ -309,8 +311,8 @@ Scarborough (SCA) : 1182652
 Mullingar (MUL) : 1180992
 Sittingbourne (SIT) : 1177494
 Whetstone(WHE) : 1175894
-Gloucester(GLO) : 1171641
-Worksop : 1170784
+Gloucester (GLO) : 1171641
+Worksop (WRK) : 1170784
 Letchworth (LET) : 1170746
 WasteExperts(EWRG) : 1169270
 Isle of Man (IOM) : 1169031
@@ -359,7 +361,7 @@ Heathrow South(FEL) : 1126147
 North Finchley(EDM) : 1125906
 Wigston (WGS) : 1125772
 Hinckley RAO (HKYRAO) : 1125414
-Loughborough(LGH) : 1123180
+Loughborough (LGH) : 1123180
 Lincoln(LIN) : 1121521
 Aintree(AIN) : 1120191
 BradWest(BDW) : 1120169
@@ -400,11 +402,11 @@ Swinton (SWT) : 1076397
 Doncaster(DON) : 1076366
 King's Lynn (KLN) : 1076227
 Birmingham(BIR) : 1075104
-Lutterworth(LTW) : 1066602
+Lutterworth (LTW) : 1066602
 Coalville(COA) : 1066557
 Oldham(OLD) : 1066494
 Ashton-under-Lyne (DRO) : 1066415
-Louth(LTH : 1063024
+Louth (LTH) : 1063024
 Kingston-upon-Thames (KIN) : 1061606
 Lambeth (LAM) : 1059169
 Stevenage(STV) : 1057830
@@ -436,7 +438,7 @@ St. Albans (SAB) : 1031966
 Brentford (BRF) : 1028746
 Galway (GAL) : 1027900
 Newbury (NEW) : 1027125
-Chesham CFC : 1026649
+Chesham (CFC) : 1026649
 Middlesbrough (MBH) : 1026382
 Sunderland (SUN) : 1026274
 Greenwich (GCH) : 1024777
@@ -459,7 +461,7 @@ Hexham (HXM) : 1016752
 Northallerton (NTA) : 1016311
 Harlow (HAR) : 1016239
 Washington (SCB) : 1015927
-MORTIMER-OFFICES : 1015669
+MORTIMER-OFFICES (MORT) : 1015669
 Lewisham (LEW) : 1015624
 Merthyr Tydfil (MTY) : 1014929
 Edinburgh West (EDW) : 1014912
