@@ -1,0 +1,3 @@
+Hello, {{ user_name }}! Welcome to our platform.
+Your current balance is {{ account_balance }}.
+The next scheduled update is on {{ update_date }}.

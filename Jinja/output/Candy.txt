@@ -1,0 +1,3 @@
+Hello, Candy! Welcome to our platform.
+Your current balance is 200.
+The next scheduled update is on 21st December.
