@@ -1,0 +1,4 @@
+﻿switch_name,IP,Vendor,model,version
+switch1,10.26.26.123,Arista,6200F,15.100.1
+switch2,172.18.21.16,Cisco,sf350,1.2.3.4
+switch3,192.168.5.46,Juniper,abc123,89.000.69

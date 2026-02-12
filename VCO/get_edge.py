@@ -24,6 +24,15 @@ edge_params = {
 }
 
 call_response = requests.post(get_edge, headers=headers, data=json.dumps(edge_params))
+print(call_response.status_code)
+print(call_response.reason)
 e_resp = call_response.json()
 
-jprint(e_resp)
+# jprint(e_resp)
+print(len(e_resp))
+content_str = str(e_resp)
+print(len(content_str))
+# print(e_resp['name'])
+# print(e_resp['modelNumber'])
+# print(e_resp['edgeState'])
+print(call_response.text)
