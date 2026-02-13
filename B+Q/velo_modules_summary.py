@@ -1,0 +1,155 @@
+from variables import *
+import sys
+import json
+import requests
+
+headers = {"Content-Type": "application/json", "Authorization": token}
+
+
+
+def list_edges(enterprise_id):
+    get_edges = f'{vco_url}enterprise/getEnterpriseEdgeList'
+
+    getConfig_params = {'enterpriseId': enterprise_id}
+
+    list_reponse = requests.post(get_edges, headers=headers, data=json.dumps(getConfig_params))
+    edge_list = list_reponse.json()
+
+    return edge_list
+
+def get_edge(edge_id):
+    # >>>api_calls
+    get_edge = f'{vco_url}/edge/getEdge'
+
+    # get device info
+    edge_params = {
+        'enterpriseId': enterprise_id,
+        'edgeId': edge_id
+    }
+
+    call_response = requests.post(get_edge, headers=headers, data=json.dumps(edge_params))
+    # print(call_response.status_code)
+    # print(call_response.reason)
+
+    get_resp = call_response.json()
+    return get_resp
+
+def edge_config(edge_id):
+
+    get_edgeconfig = f'{vco_url}edge/getEdgeConfigurationStack'
+
+    getConfig_params = {'edgeId': edge_id,
+            'enterpriseId': enterprise_id}
+
+    config_reponse = requests.post(get_edgeconfig, headers= headers, data=json.dumps(getConfig_params))
+    config_response = config_reponse.json()
+    edgeSpecificProfile = dict(config_response[0])
+    # jprint(c_resp)
+    return config_reponse
+    # return edgeSpecificProfile
+
+def wanLinkSummary(edgeSpecificProfile):
+    edgeSpecificProfile = edgeSpecificProfile
+    modules = edgeSpecificProfile['modules']
+    
+    count = 0
+    for m in modules:
+        if m['name'] == 'WAN':
+            wan_links = edgeSpecificProfile['modules'][count]['data']['links']
+        else:
+            count += 1
+    wan_count = (len(wan_links))
+    
+    network_list = []
+    for i in range(wan_count):
+            sim_count = 0
+            sublist = []
+            sublist.append(wan_links[i]['name'])
+            sublist.append(wan_links[i]['publicIpAddress'])
+            sublist.append(wan_links[i]['type'])
+            sublist.append(wan_links[i]['isp'])
+            sublist.append(wan_links[i]['interfaces'][0])
+            # > last avtive time
+            # last = (edgeSpecificProfile['modules'][5]['data']['links'][i]['lastActive'])
+            # date_time = datetime.datetime.fromtimestamp(last/1000)
+            # formatted_date = date_time.strftime('%Y-%m-%d')
+            # sublist.append(formatted_date)
+            backup = (wan_links[i]['backupOnly'])
+            standby = (wan_links[i]['hotStandby'])
+            if backup or standby:
+                    sublist.append('Yes')
+            else:
+                    sublist.append('No')
+            network_list.append(sublist)
+    
+    return wan_count, network_list
+
+def getEdgeApps(vco,enterprise,api_key,edge_id,output_dir,timestamp,start,stop):
+    vco_hostname = vco
+    enterprise_id = enterprise
+    token = api_key
+    base_output = output_dir
+    suffix = timestamp
+    epoch_start = start
+    epoch_end = stop
+
+    apps_output = f'{base_output}/app_list-{suffix}.json'
+
+    # >>> API call
+    vco_url = f'https://{vco_hostname}/portal/rest/'
+    headers = {"Content-Type": "application/json", "Authorization": token}
+    get_apps = f'{vco_url}/metrics/getEdgeAppMetrics'
+
+    getApps_params = {
+                    'enterpriseId': enterprise_id,
+                    'id': edge_id,
+                    'interval': {
+                        "start": epoch_start,
+                        "end": epoch_end
+                    },
+                    # 'limit': 5,
+                    'resolveApplicationNames': True
+                    }
+
+    app_reponse = requests.post(get_apps, headers= headers, data=json.dumps(getApps_params))
+    a_resp = app_reponse.json()
+
+    with open(apps_output,'w') as file:
+        json.dump(a_resp, file)
+
+    return a_resp
+
+>>>>>> CHECK FROM HERE
+def get_licenses():
+     pass
+
+def create_edge(params_dict):
+    create_edge = f'{vco_url}edge/edgeProvision'
+    provision_response = requests.post(create_edge, headers=headers, data=json.dumps(params_dict))
+
+def get_software_versions(): # NOT NEEDED for B&Q ?????
+    edge_software_version = 'R5232'# replace as needed
+    get_softwareVersions = f'{vco_url}enterpriseProxy/getEnterpriseProxyOperatorProfiles'
+    software_params = {"enterpriseProxyId": 0}
+    versions_resp = requests.post(get_softwareVersions, headers=headers, data=json.dumps(software_params))
+    software_versions = versions_resp.json()
+    
+    return software_versions
+
+def update_software_version(required_version):
+    update_softwareVersions = f'{vco_url}edge/setEdgeOperatorConfiguration'
+    software_versions = get_software_versions()
+    for version in software_versions:
+        if version['name'] == required_software:
+            print(version)
+            version_id = version['id']
+
+    software_params = {"edgeId": edge_id,
+        "enterpriseId": enterprise_id,
+        "configurationId": version_id,
+    }
+
+    software_resp = requests.post(update_softwareVersions, headers=headers, data=json.dumps(software_params))
+    s_resp = software_resp.json()
+
+    return s_resp

@@ -28,6 +28,8 @@ print(call_response.status_code)
 print(call_response.reason)
 e_resp = call_response.json()
 
+print(token)
+print(len(token))
 # jprint(e_resp)
 print(len(e_resp))
 content_str = str(e_resp)
