@@ -5,7 +5,60 @@ import requests
 
 headers = {"Content-Type": "application/json", "Authorization": token}
 
+def get_software_versions():
+    get_softwareVersions = f'{vco_url}enterpriseProxy/getEnterpriseProxyOperatorProfiles'
+    software_params = {"enterpriseProxyId": 0}
+    versions_resp = requests.post(get_softwareVersions, headers=headers, data=json.dumps(software_params))
+    software_versions = versions_resp.json()
+    
+    return software_versions
 
+def get_profiles():
+    get_profile_list = f'{vco_url}enterprise/getEnterpriseConfigurationsPolicies'
+    profile_params = {
+        "enterpriseId": enterprise_id,
+    }
+    profile_response = requests.post(get_profile_list, headers=headers, data=json.dumps(profile_params))
+    prof_response = profile_response.json()
+    
+    return prof_response
+
+def get_licenses():
+    get_license_list = f'{vco_url}license/getEnterpriseEdgeLicenses'
+    license_params = {
+        "enterpriseId": enterprise_id,
+    }
+    license_response = requests.post(get_license_list, headers=headers, data=json.dumps(license_params))
+    l_response = license_response.json()
+    
+    return l_response
+
+def create_edge(provision_params):
+    new_edge = f'{vco_url}edge/edgeProvision'
+
+    provision_response = requests.post(new_edge, headers=headers, data=json.dumps(provision_params))
+    prov_response = provision_response.json()
+    
+    return prov_response
+
+
+def update_software_version(required_version):
+    update_softwareVersions = f'{vco_url}edge/setEdgeOperatorConfiguration'
+    software_versions = get_software_versions()
+    for version in software_versions:
+        if version['name'] == required_software:
+            print(version)
+            version_id = version['id']
+
+    software_params = {"edgeId": edge_id,
+        "enterpriseId": enterprise_id,
+        "configurationId": version_id,
+    }
+
+    software_resp = requests.post(update_softwareVersions, headers=headers, data=json.dumps(software_params))
+    s_resp = software_resp.json()
+
+    return s_resp
 
 def list_edges(enterprise_id):
     get_edges = f'{vco_url}enterprise/getEnterpriseEdgeList'
@@ -35,18 +88,15 @@ def get_edge(edge_id):
     return get_resp
 
 def edge_config(edge_id):
-
     get_edgeconfig = f'{vco_url}edge/getEdgeConfigurationStack'
 
-    getConfig_params = {'edgeId': edge_id,
+    config_params = {'edgeId': edge_id,
             'enterpriseId': enterprise_id}
 
-    config_reponse = requests.post(get_edgeconfig, headers= headers, data=json.dumps(getConfig_params))
-    config_response = config_reponse.json()
-    edgeSpecificProfile = dict(config_response[0])
-    # jprint(c_resp)
-    return config_reponse
-    # return edgeSpecificProfile
+    config_reponse = requests.post(get_edgeconfig, headers= headers, data=json.dumps(config_params))
+    c_response = config_reponse.json()
+    
+    return c_response
 
 def wanLinkSummary(edgeSpecificProfile):
     edgeSpecificProfile = edgeSpecificProfile
@@ -118,38 +168,3 @@ def getEdgeApps(vco,enterprise,api_key,edge_id,output_dir,timestamp,start,stop):
         json.dump(a_resp, file)
 
     return a_resp
-
->>>>>> CHECK FROM HERE
-def get_licenses():
-     pass
-
-def create_edge(params_dict):
-    create_edge = f'{vco_url}edge/edgeProvision'
-    provision_response = requests.post(create_edge, headers=headers, data=json.dumps(params_dict))
-
-def get_software_versions(): # NOT NEEDED for B&Q ?????
-    edge_software_version = 'R5232'# replace as needed
-    get_softwareVersions = f'{vco_url}enterpriseProxy/getEnterpriseProxyOperatorProfiles'
-    software_params = {"enterpriseProxyId": 0}
-    versions_resp = requests.post(get_softwareVersions, headers=headers, data=json.dumps(software_params))
-    software_versions = versions_resp.json()
-    
-    return software_versions
-
-def update_software_version(required_version):
-    update_softwareVersions = f'{vco_url}edge/setEdgeOperatorConfiguration'
-    software_versions = get_software_versions()
-    for version in software_versions:
-        if version['name'] == required_software:
-            print(version)
-            version_id = version['id']
-
-    software_params = {"edgeId": edge_id,
-        "enterpriseId": enterprise_id,
-        "configurationId": version_id,
-    }
-
-    software_resp = requests.post(update_softwareVersions, headers=headers, data=json.dumps(software_params))
-    s_resp = software_resp.json()
-
-    return s_resp
