@@ -13,9 +13,10 @@ token = f'Token {api_template("velo_211")}' # api key retrieve external to repo
 # # environment specific
 enterprise_id = 43 # tenant
 edge_id = 42673
-# edge_id = 27901
+# edge_id = 27901 # legacy test
 profile_id = 175 # profile #
 license_id = 182 # retrieve from get_licenses
 device_type = 'edge6X0'
-required_software = 'R5260' # replace as needed
-# name = 'steve180226'
+required_software = 'R5260-20251105-GA-6fdd8e5039' # replace as needed for specific search
+# required_software = 'R5260' # replace as needed for specific search
+# software_id = 52491 # test value

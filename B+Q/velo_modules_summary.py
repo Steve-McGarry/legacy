@@ -41,20 +41,20 @@ def create_edge(provision_params):
     
     return prov_response
 
-
-def update_software_version(required_version):
+def update_software_version(fw_version):
+    
     update_softwareVersions = f'{vco_url}edge/setEdgeOperatorConfiguration'
     software_versions = get_software_versions()
+    
     for version in software_versions:
-        if version['name'] == required_software:
-            print(version)
-            version_id = version['id']
+        if version['name'] == fw_version:
+            software_id = version['id']
+            print(software_id)
 
     software_params = {"edgeId": edge_id,
         "enterpriseId": enterprise_id,
-        "configurationId": version_id,
+        "configurationId": software_id,
     }
-
     software_resp = requests.post(update_softwareVersions, headers=headers, data=json.dumps(software_params))
     s_resp = software_resp.json()
 
@@ -71,18 +71,14 @@ def list_edges(enterprise_id):
     return edge_list
 
 def get_edge(edge_id):
-    # >>>api_calls
     get_edge = f'{vco_url}/edge/getEdge'
 
-    # get device info
     edge_params = {
         'enterpriseId': enterprise_id,
         'edgeId': edge_id
     }
 
     call_response = requests.post(get_edge, headers=headers, data=json.dumps(edge_params))
-    # print(call_response.status_code)
-    # print(call_response.reason)
 
     get_resp = call_response.json()
     return get_resp

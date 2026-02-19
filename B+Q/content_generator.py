@@ -109,52 +109,56 @@ def get_appliance_config(edge_id):
     # return device_settings, module_id
     # return device_settings, module_id
 
-# def update_appliance_config(edge_id):
-    # edge_id = edge_id
-    # update_edgeconfig = f'{vco_url}configuration/updateConfigurationModule'
+def update_appliance_config(edge_id):
+    edge_id = edge_id
+    update_edgeconfig = f'{vco_url}configuration/updateConfigurationModule'
 
-    # # ingest config item specific dicts; reduce io time
-    # device_settings, module_id = get_appliance_config()
+    # ingest config item specific dicts; reduce io time
+    device_settings, module_id = get_appliance_config()
 
-    # # GE3/LAN interface
-    # lan_nic = device_settings['routedInterfaces'][1]
-    # # jprint(lan_nic)
-    # lan_index = 1
-    # lan_patch = jsonpatch.JsonPatch([
-    #     {"op": "add", "path": f"/override", "value": True},
-    #     {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/type", "value": 'STATIC'},
-    #     {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/cidrPrefix", "value": '24'},
-    #     {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/cidrIp", "value": '172.20.0.20'},
-    #     {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/netmask", "value": '255.255.255.0'},
-    #     {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/gateway", "value": '172.20.0.1'},
-    # ])
+    # GE3/LAN interface
+    lan_nic = device_settings['routedInterfaces'][1]
+    # jprint(lan_nic)
+    lan_index = 1
+    lan_patch = jsonpatch.JsonPatch([
+        {"op": "add", "path": f"/override", "value": True},
+        {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/type", "value": 'STATIC'},
+        {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/cidrPrefix", "value": '24'},
+        {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/cidrIp", "value": '172.20.0.20'},
+        {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/netmask", "value": '255.255.255.0'},
+        {"op": "add", "path": f"/routedInterfaces/{lan_index}/addressing/gateway", "value": '172.20.0.1'},
+    ])
 
-    # patch_set = jsonpatch.JsonPatch([*lan_patch])
-    # patch_set.apply(device_settings, in_place=True) # over-write
+    patch_set = jsonpatch.JsonPatch([*lan_patch])
+    patch_set.apply(device_settings, in_place=True) # over-write
 
-    # # checking content
-    # print('Verifying updates....')
-    # print(f"override: {device_settings['override']}")
-    # print(f"Type: {device_settings['routedInterfaces'][lan_index]['addressing']['type']}")
-    # print(f"cidrPrefix: {device_settings['routedInterfaces'][lan_index]['addressing']['cidrPrefix']}")
-    # print(f"cidrIp: {device_settings['routedInterfaces'][lan_index]['addressing']['cidrIp']}")
-    # print(f"netmask: {device_settings['routedInterfaces'][lan_index]['addressing']['netmask']}")
-    # print(f"gateway: {device_settings['routedInterfaces'][lan_index]['addressing']['gateway']}")
+    # checking content
+    print('Verifying updates....')
+    print(f"override: {device_settings['override']}")
+    print(f"Type: {device_settings['routedInterfaces'][lan_index]['addressing']['type']}")
+    print(f"cidrPrefix: {device_settings['routedInterfaces'][lan_index]['addressing']['cidrPrefix']}")
+    print(f"cidrIp: {device_settings['routedInterfaces'][lan_index]['addressing']['cidrIp']}")
+    print(f"netmask: {device_settings['routedInterfaces'][lan_index]['addressing']['netmask']}")
+    print(f"gateway: {device_settings['routedInterfaces'][lan_index]['addressing']['gateway']}")
 
-    # update_dict = {'data': {}}
-    # update_dict['data'] = device_settings
+    update_dict = {'data': {}}
+    update_dict['data'] = device_settings
 
-    # network_update_params = {
-    # 'enterpriseId': enterprise_id,
-    # 'id': module_id,
-    # 'returnData': 'true',
-    # '_update': update_dict,
-    # 'name': 'deviceSettings'
-    # }
+    network_update_params = {
+    'enterpriseId': enterprise_id,
+    'id': module_id,
+    'returnData': 'true',
+    '_update': update_dict,
+    'name': 'deviceSettings'
+    }
 
-    # config_reponse = requests.post(update_edgeconfig, headers=headers, data=json.dumps(network_update_params))
-    # network_resp = config_reponse.json()
-    # jprint(network_resp)
+    config_reponse = requests.post(update_edgeconfig, headers=headers, data=json.dumps(network_update_params))
+    network_resp = config_reponse.json()
+    jprint(network_resp)
+
+def upgrade_software():
+    
+    update_software_version(required_software)
 
 def edge_list():
         edges_output = f'{output_dir}/vce_list_full-{timestamp}.json'
@@ -167,7 +171,6 @@ def edge_list():
         vce_dict = {}
         site_count = 0
         for i in edge_list:
-            # print(site_count)
             site_count += 1
             vce_dict[f'{i["name"]}'] = i["id"]
         
@@ -182,9 +185,10 @@ def main ():
     # clrscr()
     # base_collection()
     # create_appliance(f'steve{timestamp}')
+    upgrade_software()
     # get_device_info(edge_id)
     # get_appliance_config()
-    get_appliance_config(edge_id)
+    # get_appliance_config(edge_id)
     # edge_list()
  
     
