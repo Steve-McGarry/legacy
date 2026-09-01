@@ -1,3 +1,5 @@
+from urllib import response
+
 from variables import *
 import sys
 import json
@@ -164,3 +166,12 @@ def getEdgeApps(vco,enterprise,api_key,edge_id,output_dir,timestamp,start,stop):
         json.dump(a_resp, file)
 
     return a_resp
+
+def get_enterprisesv2():
+    url = "https://vco84-usvi1.velocloud.net/api/sdwan/v2/enterprises"
+    headers = {"Content-Type": "application/json", "Authorization": token}
+
+    response = requests.get(url, headers=headers)
+
+    enterprises_list = response.json()
+    return enterprises_list

@@ -176,6 +176,21 @@ def edge_list():
         
         print(f'Total number of devices: {site_count}')
 
+def list_enterprises():
+    enterprises_list = get_enterprisesv2()
+    # jprint(enterprises_list['data'])
+    enterprise_dict = {}
+    enterprise_count = 0
+    for i in enterprises_list['data']:
+        enterprise_count += 1
+        enterprise_dict[f'{i["name"]}'] = i["logicalId"]
+    
+    print(f'Total number of enterprises: {enterprise_count}')
+    for name, logicalId in enterprise_dict.items():
+        print(f'Enterprise Name: {name}, Logical ID: {logicalId}')
+        
+    return enterprise_dict
+
 def test():
     pass
 
@@ -185,11 +200,13 @@ def main ():
     # clrscr()
     # base_collection()
     # create_appliance(f'steve{timestamp}')
-    upgrade_software()
+    # upgrade_software()
     # get_device_info(edge_id)
     # get_appliance_config()
     # get_appliance_config(edge_id)
     # edge_list()
+    # list_enterprises()
+    list_enterprises()
  
     
 if __name__ == "__main__":
