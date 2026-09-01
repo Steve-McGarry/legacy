@@ -13,7 +13,6 @@ vco_url = f'https://{vco_hostname}/portal/rest/'
 # 84
 
 # 211
-token = f'Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblV1aWQiOiJjYzQ2ZDdiZC1lNzA1LTQwNWItOGIyNi1mMDMwMWVhNzk0ZTciLCJleHAiOjE4MTk0NjQ3MzcsInV1aWQiOiJlODAxOTM0Yy02NzBhLTExZTktODllNy0wYWNkOTYwYmJhMTIiLCJpYXQiOjE3ODc5Mjg3NDJ9.T4u7clLDF3-r4VapimhydMINJlQi3HGSAH6HOxE_zaU' # api key retrieve external to repo
 
 # # environment specific
 enterprise_id = 43 # tenant
